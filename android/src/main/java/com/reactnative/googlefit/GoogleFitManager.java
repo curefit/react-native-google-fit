@@ -1,42 +1,46 @@
 /**
  * Copyright (c) 2017-present, Stanislav Doskalenko - doskalenko.s@gmail.com
  * All rights reserved.
- *
+ * <p>
  * This source code is licensed under the MIT-style license found in the
  * LICENSE file in the root directory of this source tree.
- *
+ * <p>
  * Based on Asim Malik android source code, copyright (c) 2015
- *
  **/
 package com.reactnative.googlefit;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
-import java.util.ArrayList;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.ErrorDialogFragment;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.ErrorDialogFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.fitness.Fitness;
-import com.google.android.gms.auth.api.signin.*;
+
+import java.util.ArrayList;
 
 
 public class GoogleFitManager implements
@@ -110,16 +114,19 @@ public class GoogleFitManager implements
         return distanceHistory;
     }
 
-    public void resetAuthInProgress()
-    {
+    public void resetAuthInProgress() {
         if (!isAuthorized()) {
             mAuthInProgress = false;
         }
     }
 
-    public CalorieHistory getCalorieHistory() { return calorieHistory; }
+    public CalorieHistory getCalorieHistory() {
+        return calorieHistory;
+    }
 
-    public NutritionHistory getNutritionHistory() { return nutritionHistory; }
+    public NutritionHistory getNutritionHistory() {
+        return nutritionHistory;
+    }
 
     public void authorize(ArrayList<String> userScopes) {
         final ReactContext mReactContext = this.mReactContext;
@@ -182,7 +189,7 @@ public class GoogleFitManager implements
         mApiClient.connect();
     }
 
-    public void  disconnect(Context context) {
+    public void disconnect(Context context) {
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -280,8 +287,8 @@ public class GoogleFitManager implements
             args.putInt(AUTH_PENDING, errorCode);
             dialogFragment.setArguments(args);
             dialogFragment.show(mActivity.getFragmentManager(), "errordialog");
-        } catch(IllegalStateException e){
-                e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         }
 
     }
