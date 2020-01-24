@@ -272,12 +272,17 @@ public class GoogleFitManager implements
 
     /* Creates a dialog for an error message */
     private void showErrorDialog(int errorCode) {
-        // Create a fragment for the error dialog
-        GoogleFitCustomErrorDialig dialogFragment = new GoogleFitCustomErrorDialig();
-        // Pass the error that should be displayed
-        Bundle args = new Bundle();
-        args.putInt(AUTH_PENDING, errorCode);
-        dialogFragment.setArguments(args);
-        dialogFragment.show(mActivity.getFragmentManager(), "errordialog");
+        try {
+            // Create a fragment for the error dialog
+            GoogleFitCustomErrorDialig dialogFragment = new GoogleFitCustomErrorDialig();
+            // Pass the error that should be displayed
+            Bundle args = new Bundle();
+            args.putInt(AUTH_PENDING, errorCode);
+            dialogFragment.setArguments(args);
+            dialogFragment.show(mActivity.getFragmentManager(), "errordialog");
+        } catch(IllegalStateException e){
+                e.printStackTrace();
+        }
+
     }
 }
